@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 
-import psycological
+import psychological
 import settings
 from generator import Generator
 
@@ -16,9 +16,9 @@ def sommelier():
     return jsonify(sentences)
 
 
-@app.route("/psycological_test")
-def psycological_test():
-    data = psycological.generate_n(25)
+@app.route("/psychological_test")
+def psychological_test():
+    data = psychological.generate_n(25)
     return jsonify(data)
 
 
