@@ -55,7 +55,7 @@ def generate_n(n: int):
         res_ss = res_s_model.generate_n(Setting.option_n)
         res_bs = res_b_model.generate_n(Setting.option_n, lambda x: Setting.res_body_min <= len(x) <= Setting.res_body_max)
         res.append({"question": q_text, "options": op_texts, "result_summaries": res_ss, "result_bodies": res_bs})
-    return json.dumps(res)
+    return res
 
 
 def main():
