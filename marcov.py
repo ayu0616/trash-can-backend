@@ -68,7 +68,10 @@ class Marcov:
         return [self.generate(condition) for _ in range(n)]
 
     def __check_bracket(self, s: str):
-        """括弧の対応を確認する"""
+        """
+        括弧の対応を確認する
+        対応が取れていればTrue、取れていなければFalseを返す
+        """
         STARTS = ("「", "（", "(", "『")
         ENDS = ("」", "）", ")", "』")
         q: deque[str] = deque()
