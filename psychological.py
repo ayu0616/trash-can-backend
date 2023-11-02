@@ -1,7 +1,7 @@
 import json
 from typing import TypedDict
 
-from marcov import Marcov
+from marcov import Marcov, Marcov2
 
 
 class Setting:
@@ -28,10 +28,10 @@ def generate_n(n: int):
     with open(Setting.json_path, "r") as f:
         d: list[Data] = json.load(f)
 
-    q_model = Marcov()  # 質問文のモデル
-    op_model = Marcov()  # 選択肢のモデル
-    res_s_model = Marcov()  # テスト結果の要約のモデル
-    res_b_model = Marcov()  # テスト結果の本文のモデル
+    q_model = Marcov2()  # 質問文のモデル
+    op_model = Marcov2()  # 選択肢のモデル
+    res_s_model = Marcov2()  # テスト結果の要約のモデル
+    res_b_model = Marcov2()  # テスト結果の本文のモデル
     questions: list[str] = []
     options: list[str] = []
     result_summaries: list[str] = []
@@ -63,10 +63,10 @@ def main():
     with open(Setting.json_path, "r") as f:
         d: list[Data] = json.load(f)
 
-    q_model = Marcov()  # 質問文のモデル
-    op_model = Marcov()  # 選択肢のモデル
-    res_s_model = Marcov()  # テスト結果の要約のモデル
-    res_b_model = Marcov()  # テスト結果の本文のモデル
+    q_model = Marcov2()  # 質問文のモデル
+    op_model = Marcov2()  # 選択肢のモデル
+    res_s_model = Marcov2()  # テスト結果の要約のモデル
+    res_b_model = Marcov2()  # テスト結果の本文のモデル
     questions: list[str] = []
     options: list[str] = []
     result_summaries: list[str] = []

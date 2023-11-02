@@ -14,7 +14,7 @@ class MDicItem:
 
 class MDicItem2:
     def __init__(self) -> None:
-        self.words: list[tuple[str, str]] = []
+        self.words: list[tuple[str, ...]] = []
         self.weights: list[int | float] = []
 
 
@@ -107,21 +107,21 @@ class Marcov2(Marcov):
     def train(self, sentences: list[str], weight_controler: Callable[[int], int | float] = lambda x: x):
         wakati = MeCab.Tagger("-Owakati")
         wakati_res: list[list[str]] = [[self.__BEGIN__] + wakati.parse(s).split() + [self.__END__] for s in sentences]
-        quadgrams: list[tuple[str, str, str, str]] = []
+        grams: list[tuple[str, ...]] = []
         for res in wakati_res:
-            quadgrams.extend(ngrams(res, 4))
-        cnt = Counter(quadgrams)
+            grams.extend(ngrams(res, 5))
+        cnt = Counter(grams)
 
-        self.m_dic: defaultdict[tuple[str, str], MDicItem2] = defaultdict(MDicItem2)
+        self.m_dic: defaultdict[tuple[str, ...], MDicItem2] = defaultdict(MDicItem2)
         for k, v in cnt.items():
-            pre_words, next_word = k[:2], k[2:]
+            pre_words, next_word = k[:3], k[3:]
             self.m_dic[pre_words].words.append(next_word)
             self.m_dic[pre_words].weights.append(weight_controler(v))
 
-        begin_words_dic: defaultdict[str, int] = defaultdict(int)
+        begin_words_dic: defaultdict[tuple[str, ...], int] = defaultdict(int)
         for k, v in cnt.items():
             if k[0] == self.__BEGIN__:
-                next_word = k[1]
+                next_word = k[1:3]
                 begin_words_dic[next_word] += v
 
         self.begin_words = [k for k in begin_words_dic.keys()]
@@ -132,9 +132,9 @@ class Marcov2(Marcov):
         if not self.trained:
             raise Exception("Not trained yet.")
         begin_word = random.choices(self.begin_words, weights=self.begin_weights, k=1)[0]
-        sentences: list[str] = [self.__BEGIN__, begin_word]
+        sentences: list[str] = [self.__BEGIN__, *begin_word]
         while True:
-            pre_words: tuple[str, str] = (sentences[-2], sentences[-1])
+            pre_words: tuple[str, ...] = (sentences[-3], sentences[-2], sentences[-1])
             next_word = random.choices(self.m_dic[pre_words].words, weights=self.m_dic[pre_words].weights, k=1)[0]
             sentences.append(next_word[0])
             if next_word[1] == self.__END__:
