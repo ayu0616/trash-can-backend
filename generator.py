@@ -4,9 +4,8 @@ from collections import Counter, defaultdict
 from itertools import product
 
 import MeCab
-from nltk import ngrams
-
 import settings
+from nltk import ngrams
 
 __BEGIN__ = "__BEGIN__"
 __END__ = "__END__"
@@ -26,8 +25,9 @@ class MDicItem:
 
 
 class Generator:
-    def __init__(self, is_chaos=False) -> None:
+    def __init__(self, is_chaos=False, gram_n: int = 3) -> None:
         self.is_chaos = is_chaos
+        self.gram_n = gram_n
 
         words, self.word_cnt = self.__load_txt_file(settings.TXT_FILE_PATH)
 
@@ -35,7 +35,7 @@ class Generator:
 
         grams: list[tuple[str, ...]] = []
         for w in words:
-            grams.extend(ngrams(w, settings.N_GRAM))
+            grams.extend(ngrams(w, self.gram_n))
         cnt = Counter(grams)
 
         self.m_dic: defaultdict[tuple[str, ...], MDicItem] = defaultdict(MDicItem)
@@ -100,7 +100,7 @@ class Generator:
         begin_word = random.choices(self.begin_words, weights=self.begin_weights, k=1)[0]
         sentences: list[str] = [__BEGIN__, *begin_word]
         while True:
-            pre_words = tuple(sentences[-(settings.N_GRAM - 1) :])
+            pre_words = tuple(sentences[-(self.gram_n - 1) :])
             next_word = random.choices(self.m_dic[pre_words].words, weights=self.m_dic[pre_words].weights, k=1)[0]
             if next_word == __END__:
                 break
