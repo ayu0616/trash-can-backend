@@ -11,7 +11,8 @@ app = Flask(__name__)
 def sommelier():
     is_chaos = request.args.get("chaos", "false") == "true"
     shuffle_year = request.args.get("shuffle_year", "false") == "true"
-    generator = Generator(is_chaos=is_chaos)
+    gram_n = request.args.get("gram_n", 3, type=int)
+    generator = Generator(is_chaos=is_chaos, gram_n=gram_n)
     sentences = [generator.generate(shuffle_year=shuffle_year) for _ in range(settings.N_SENTENCES)]
     return jsonify(sentences)
 

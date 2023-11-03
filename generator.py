@@ -4,8 +4,9 @@ from collections import Counter, defaultdict
 from itertools import product
 
 import MeCab
-import settings
 from nltk import ngrams
+
+import settings
 
 __BEGIN__ = "__BEGIN__"
 __END__ = "__END__"
@@ -140,7 +141,7 @@ class Generator:
 
 
 def main():
-    generator = Generator(is_chaos=True)
+    generator = Generator(is_chaos=True, gram_n=2)
     for i in range(20):
         text = generator.generate()
         print("{:02}. {}".format(i + 1, text))
