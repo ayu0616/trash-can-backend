@@ -11,6 +11,6 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["python", "app.py"]
